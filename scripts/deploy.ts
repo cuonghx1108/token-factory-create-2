@@ -1,18 +1,26 @@
 import { ethers } from "hardhat";
 
 async function main() {
-  const currentTimestampInSeconds = Math.round(Date.now() / 1000);
-  const ONE_YEAR_IN_SECS = 365 * 24 * 60 * 60;
-  const unlockTime = currentTimestampInSeconds + ONE_YEAR_IN_SECS;
+  const [owner] = await ethers.getSigners();
 
-  const lockedAmount = ethers.utils.parseEther("1");
+  const ERC721BridgeToken = await ethers.getContractFactory("ERC721BridgeToken");
+  const erc721BridgeToken = await ERC721BridgeToken.deploy("", "", ethers.constants.AddressZero, 0);
+  await erc721BridgeToken.deployed();
 
-  const Lock = await ethers.getContractFactory("Lock");
-  const lock = await Lock.deploy(unlockTime, { value: lockedAmount });
+  console.log(`ERC721BridgeToken deployed to ${erc721BridgeToken.address}`);
 
-  await lock.deployed();
+  const ERC721TokenFactory = await ethers.getContractFactory("ERC721TokenFactory");
+  const erc721TokenFactory = await ERC721TokenFactory.deploy(erc721BridgeToken.address);
+  await erc721TokenFactory.deployed();
 
-  console.log(`Lock with 1 ETH and unlock timestamp ${unlockTime} deployed to ${lock.address}`);
+  console.log(`ERC721TokenFactory deployed to ${erc721TokenFactory.address}`);
+
+  const rs1 = await erc721TokenFactory.connect(owner).deploy("Contract 1", "CT1", ethers.constants.AddressZero)
+  await rs1.wait()
+
+  const rs2 = await erc721TokenFactory.connect(owner).deploy("Contract 2", "CT2", ethers.constants.AddressZero)
+  await rs2.wait()
+
 }
 
 // We recommend this pattern to be able to use async/await everywhere

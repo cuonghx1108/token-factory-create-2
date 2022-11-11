@@ -16,10 +16,10 @@ contract ERC721BridgeToken is ERC721, IBurnableMintableERC721Token {
         string memory _name,
         string memory _symbol,
         address _bridgeContract,
-        uint256 _contractId
+        uint256 contractId_
     ) ERC721(_name, _symbol) {
         bridgeContract = _bridgeContract;
-        _contractId= _contractId;
+        _contractId= contractId_;
     }
 
     /**

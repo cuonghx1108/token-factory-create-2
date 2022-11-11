@@ -2,6 +2,7 @@ pragma solidity 0.7.5;
 
 import "@openzeppelin/contracts/utils/Counters.sol";
 import "./ERC721TokenProxy.sol";
+import "hardhat/console.sol";
 
 contract ERC721TokenFactory {
   using Counters for Counters.Counter;
@@ -21,7 +22,7 @@ contract ERC721TokenFactory {
     string memory _name,
     string memory _symbol,
     address _bridgeContract
-  ) external returns(address) {
+  ) external {
     uint256 _contractId = _contractIdCounter.current();
     _contractIdCounter.increment();
 
@@ -29,7 +30,8 @@ contract ERC721TokenFactory {
 
     // This syntax is a newer way to invoke create2 without assembly, you just need to pass salt
     // https://docs.soliditylang.org/en/latest/control-structures.html#salted-contract-creations-create2
-    return address(
+
+    console.log(address(
       new ERC721TokenProxy{salt: _salt}(
         tokenImageERC721(),
          _name, 
@@ -37,6 +39,15 @@ contract ERC721TokenFactory {
          _bridgeContract, 
          _contractId
       )
-    );
+    ));
+    // return address(
+    //   new ERC721TokenProxy{salt: _salt}(
+    //     tokenImageERC721(),
+    //      _name, 
+    //      _symbol, 
+    //      _bridgeContract, 
+    //      _contractId
+    //   )
+    // );
   }
 }

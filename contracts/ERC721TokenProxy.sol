@@ -38,7 +38,7 @@ contract ERC721TokenProxy is Proxy {
         string memory _name,
         string memory _symbol,
         address _owner,
-        uint256 _contractId
+        uint256 contractId_
     ) {
         assembly {
             // EIP 1967
@@ -48,7 +48,7 @@ contract ERC721TokenProxy is Proxy {
         name = _name;
         symbol = _symbol;
         bridgeContract = _owner; // _owner == HomeOmnibridgeNFT/ForeignOmnibridgeNFT mediator
-        _contractId = _contractId;
+        _contractId = contractId_;
     }
 
     /**
