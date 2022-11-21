@@ -15,6 +15,10 @@ contract ERC721TokenFactory {
     return _erc721Image;
   }
 
+  function setERC721Image(address erc721Image_) public {
+    _erc721Image = erc721Image_;
+  }
+
   function deployCollection(
     string memory _name,
     string memory _symbol,
@@ -38,15 +42,5 @@ contract ERC721TokenFactory {
 
   function mint (address collection, address _to, uint256 _tokenId) external {
     IMint(collection).mint(_to, _tokenId);
-  }
-
-  function deployERC721BridgeTokenImage() external {
-      require(_erc721Image == address(0));
-      bytes32 _salt = keccak256(abi.encodePacked("", "", address(0)));
-      _erc721Image = address(new ERC721BridgeToken{salt: _salt}(
-        "",
-        "",
-        address(0)
-      ));
   }
 }

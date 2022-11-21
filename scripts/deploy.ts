@@ -3,6 +3,16 @@ import { ethers } from "hardhat";
 async function main() {
   // const [owner] = await ethers.getSigners();
   
+  const ERC721BridgeToken = await ethers.getContractFactory("ERC721BridgeToken");
+  const erc721BridgeToken = await ERC721BridgeToken.deploy("", "", ethers.constants.AddressZero);
+  await erc721BridgeToken.deployed();
+  console.log(`erc721BridgeToken deployed to ${erc721BridgeToken.address}`);
+
+  // const ERC721Custom = await ethers.getContractFactory("ERC721Custom");
+  // const erc721Custom = await ERC721Custom.deploy("", "");
+  // await erc721Custom.deployed();
+  // console.log(`erc721Custom deployed to ${erc721Custom.address}`);
+
   const ERC721TokenFactory = await ethers.getContractFactory("ERC721TokenFactory");
   const erc721TokenFactory = await ERC721TokenFactory.deploy();
   await erc721TokenFactory.deployed();

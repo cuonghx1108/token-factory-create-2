@@ -64,7 +64,7 @@ contract ERC721BridgeToken is ERC721, IBurnableMintableERC721Token {
      * @param _to address of the newly created token owner.
      * @param _tokenId unique identifier of the minted token.
      */
-    function mint(address _to, uint256 _tokenId) external override {
+    function mint(address _to, uint256 _tokenId) external override onlyBridge {
         _safeMint(_to, _tokenId);
     }
 
