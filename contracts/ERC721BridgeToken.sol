@@ -10,16 +10,13 @@ import "./interfaces/IBurnableMintableERC721Token.sol";
  */
 contract ERC721BridgeToken is ERC721, IBurnableMintableERC721Token {
     address public bridgeContract;
-    uint256 private _contractId;
 
     constructor(
         string memory _name,
         string memory _symbol,
-        address _bridgeContract,
-        uint256 contractId_
+        address _bridgeContract
     ) ERC721(_name, _symbol) {
         bridgeContract = _bridgeContract;
-        _contractId= contractId_;
     }
 
     /**
@@ -67,7 +64,7 @@ contract ERC721BridgeToken is ERC721, IBurnableMintableERC721Token {
      * @param _to address of the newly created token owner.
      * @param _tokenId unique identifier of the minted token.
      */
-    function mint(address _to, uint256 _tokenId) external override onlyBridge {
+    function mint(address _to, uint256 _tokenId) external override {
         _safeMint(_to, _tokenId);
     }
 

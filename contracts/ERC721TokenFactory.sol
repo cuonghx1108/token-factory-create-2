@@ -1,53 +1,52 @@
 pragma solidity 0.7.5;
 
-import "@openzeppelin/contracts/utils/Counters.sol";
 import "./ERC721TokenProxy.sol";
-import "hardhat/console.sol";
+import "./ERC721BridgeToken.sol";
 
+interface IMint {
+  function mint(address _to, uint256 _tokenId) external;
+}
 contract ERC721TokenFactory {
-  using Counters for Counters.Counter;
 
-  Counters.Counter private _contractIdCounter;
-  address private _tokenImageERC721;
+  address[] private collections;
+  address _erc721Image;
 
-  constructor(address tokenImageERC721_) {
-    _tokenImageERC721 = tokenImageERC721_;
+  function erc721Image() view public returns (address) {
+    return _erc721Image;
   }
 
-  function tokenImageERC721() public view returns(address) {
-    return _tokenImageERC721;
-  }
-
-  function deploy(
+  function deployCollection(
     string memory _name,
     string memory _symbol,
     address _bridgeContract
-  ) external {
-    uint256 _contractId = _contractIdCounter.current();
-    _contractIdCounter.increment();
-
-    bytes32 _salt = keccak256(abi.encodePacked(_name, _symbol, _contractId));
-
-    // This syntax is a newer way to invoke create2 without assembly, you just need to pass salt
-    // https://docs.soliditylang.org/en/latest/control-structures.html#salted-contract-creations-create2
-
-    console.log(address(
-      new ERC721TokenProxy{salt: _salt}(
-        tokenImageERC721(),
-         _name, 
-         _symbol, 
-         _bridgeContract, 
-         _contractId
-      )
+  ) external returns(address) {
+    require(_erc721Image != address(0));
+    bytes32 _salt = keccak256(abi.encodePacked(_name, _symbol));
+    address bridgedToken = address(new ERC721TokenProxy{salt: _salt}(
+      _erc721Image,
+      _name,
+      _symbol,
+      _bridgeContract
     ));
-    // return address(
-    //   new ERC721TokenProxy{salt: _salt}(
-    //     tokenImageERC721(),
-    //      _name, 
-    //      _symbol, 
-    //      _bridgeContract, 
-    //      _contractId
-    //   )
-    // );
+    collections.push(bridgedToken);
+    return bridgedToken;
+  }
+
+  function collectionByIndex(uint index) external view returns(address) {
+    return collections[index];
+  }
+
+  function mint (address collection, address _to, uint256 _tokenId) external {
+    IMint(collection).mint(_to, _tokenId);
+  }
+
+  function deployERC721BridgeTokenImage() external {
+      require(_erc721Image == address(0));
+      bytes32 _salt = keccak256(abi.encodePacked("", "", address(0)));
+      _erc721Image = address(new ERC721BridgeToken{salt: _salt}(
+        "",
+        "",
+        address(0)
+      ));
   }
 }
