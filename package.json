@@ -19,6 +19,7 @@
   "homepage": "https://github.com/cuonghx1108/token-factory-create-2#readme",
   "devDependencies": {
     "@nomicfoundation/hardhat-toolbox": "^2.0.0",
+    "dotenv": "^16.0.3",
     "hardhat": "^2.12.2"
   },
   "dependencies": {

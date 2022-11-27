@@ -19,8 +19,8 @@ npx hardhat node --port 8546
 
 # deploy
 
-npx hardhat run --network local1 scripts/deploy.ts
-npx hardhat run --network local2 scripts/deploy.ts
+npx hardhat run --network gusandbox scripts/deploy-home.ts
+npx hardhat run --network sepolia scripts/deploy-foreign.ts
 
 ---
 
@@ -66,3 +66,23 @@ ERC721TokenFactory deployed to 0x1BD8312D5e2E02Ea0015038553cF81CD65F9958f
 
 [ Home ] Bridge Mediator: 0xe9C3E0848376391C50E75Fb1C09d27DDf669503C
 [ Foreign ] Bridge Mediator: 0x02614b8A3Bcff717b8e7FF12D04c8B9cC897F70d
+
+---
+
+25/11/2022
+Home
+
+erc721BridgeToken deployed to 0xcc8a9f486a0d3D70F465Eb56E7783Bd16413B4B1
+erc721NativeToken deployed to 0x8383B38963E5CEf46231d231fB7bD9500aa08Be1
+ERC721TokenFactory deployed to 0xe7a382b56F8B06204D0938A6Dd311e91A1895afF
+
+Foreign
+
+erc721BridgeToken deployed to 0xcc8a9f486a0d3D70F465Eb56E7783Bd16413B4B1
+erc721NativeToken deployed to 0x8383B38963E5CEf46231d231fB7bD9500aa08Be1
+ERC721TokenFactory deployed to 0xe7a382b56F8B06204D0938A6Dd311e91A1895afF
+
+gu-bridge-nft
+
+[ Home ] Bridge Mediator: 0x444993E30951AC5b704fE19F6148AA04F59Fc0C6
+[ Foreign ] Bridge Mediator: 0x7445721C1bE87Dc2d1Bd14F23b7C16B5EDf00e16
